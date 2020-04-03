@@ -21,7 +21,9 @@ namespace DiscordBot
 
         static async Task MainAsync(string[] args)
         {
-
+            for (int i = 0; i < 5; i++) { Console.WriteLine(""); }
+            LOGGER.WriteMessageColor("▄▄▄█████▓ ▒█████  ▄▄▄█████▓ ██▓███   ▄▄▄       ██▓    \r\n▓  ██▒ ▓▒▒██▒  ██▒▓  ██▒ ▓▒▓██░  ██▒▒████▄    ▓██▒    \r\n▒ ▓██░ ▒░▒██░  ██▒▒ ▓██░ ▒░▓██░ ██▓▒▒██  ▀█▄  ▒██░    \r\n░ ▓██▓ ░ ▒██   ██░░ ▓██▓ ░ ▒██▄█▓▒ ▒░██▄▄▄▄██ ▒██░    \r\n  ▒██▒ ░ ░ ████▓▒░  ▒██▒ ░ ▒██▒ ░  ░ ▓█   ▓██▒░██████▒\r\n  ▒ ░░   ░ ▒░▒░▒░   ▒ ░░   ▒▓▒░ ░  ░ ▒▒   ▓▒█░░ ▒░▓  ░\r\n    ░      ░ ▒ ▒░     ░    ░▒ ░       ▒   ▒▒ ░░ ░ ▒  ░\r\n  ░      ░ ░ ░ ▒    ░      ░░         ░   ▒     ░ ░   \r\n             ░ ░                          ░  ░    ░  ░", "green", false);
+            for(int i = 0; i < 5; i++) { Console.WriteLine(""); }
             Console.ForegroundColor = ConsoleColor.White;
             DISCORD_CLIENT = new DiscordClient(new DiscordConfiguration
                 {
@@ -40,7 +42,7 @@ namespace DiscordBot
             {
                 StringPrefix = "!"
             });
-
+            
             COMMANDS.RegisterCommands<CommandsManager>();
             LOGGER.WriteMessageColor("Commands registered", "green", true);
             await DISCORD_CLIENT.ConnectAsync();

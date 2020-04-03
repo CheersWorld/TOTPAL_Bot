@@ -59,6 +59,7 @@ namespace DiscordBot
             int currentTop = Console.CursorTop;
             int width = Console.WindowWidth;
             int height = Console.WindowHeight;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             for (int i = 0; i < (UsedThings.Count() + 2); i++)
             {
                 Console.SetCursorPosition(width - 50, i);
