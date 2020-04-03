@@ -12,9 +12,10 @@ namespace DiscordBot
             lazy =
             new Lazy<ItemsSingleton>
                 (() => new ItemsSingleton());
-
+        private static char SPLIT_CHAR = ' ';
+        private static int SPLIT_INT = 2;
+        private static ConsoleLogger LOGGER = new ConsoleLogger();
         public static ItemsSingleton Instance { get { return lazy.Value; } }
-        int i = 0;
         Dictionary<string, string> UsedThings = new Dictionary<string, string>();
         private ItemsSingleton()
         {
@@ -24,18 +25,20 @@ namespace DiscordBot
         {
             try
             {
-                UsedThings.Add(_key.Split(' ')[2], _value);
-                Console.Write("New Article added. " + _key.Split(' ')[2] + " " + _value + "\r\n");
+                UsedThings.Add(_key.Split(SPLIT_CHAR)[2], _value);
             } catch
             {
-                Console.Write("Article updated. " + _key.Split(' ')[2] + " " + _value + "\r\n");
-                UsedThings[_key.Split(' ')[2]] = _value;
+                UsedThings[_key.Split(SPLIT_CHAR)[SPLIT_INT]] = _value;
             }
         }
         public string GetArticle(string _key)
         {
-            Console.Write("Article returned for. " + _key.Split(' ')[2]);
-            return UsedThings[_key.Split(' ')[2]];
+            try{ return "Dein Artikel ist " + UsedThings[_key.Split(SPLIT_CHAR)[SPLIT_INT]]; }
+            catch
+            {
+                LOGGER.WriteMessageColor("No article found for " + _key.Split(SPLIT_CHAR)[SPLIT_INT], "yellow", true);
+                return "Kein Artikel gefunden";
+            }            
         }
         public int GetCount()
         {
@@ -44,6 +47,51 @@ namespace DiscordBot
         public Dictionary<string, string> GetDictionary()
         {
             return UsedThings;
+        }
+        public void RemoveUser(string _key)
+        {
+            UsedThings.Remove(_key.Split(SPLIT_CHAR)[SPLIT_INT]);
+        }
+        //You could make another class for this method, would be neater. However, would need instancing of the singleton. Since this is just one method I'll do it here
+        public void MakeUI()
+        {
+            int currentLeft = Console.CursorLeft;
+            int currentTop = Console.CursorTop;
+            int width = Console.WindowWidth;
+            int height = Console.WindowHeight;
+            for (int i = 0; i < (UsedThings.Count() + 2); i++)
+            {
+                Console.SetCursorPosition(width - 50, i);
+                Console.Write("\b");
+                Console.Write("|");
+                for(int j = 0; j < 49; j++)
+                {
+                    Console.SetCursorPosition(width - 49 + j, i);
+                    Console.Write("\b");
+                    Console.Write(" ");
+                }
+            }
+            foreach(string key in UsedThings.Keys)
+            {
+                int i = 1;
+                int charPos = 0;
+                foreach (char c in key)
+                {
+                    Console.SetCursorPosition(width - (45 - charPos), i);
+                    Console.Write("\b");
+                    Console.Write(c);
+                    charPos++;
+                }
+                foreach(char j in UsedThings[key])
+                {
+                    Console.SetCursorPosition(width - (30-charPos), i);
+                    Console.Write("\b");
+                    Console.Write(j);
+                    charPos++;
+                }
+                i++;
+            }
+            Console.SetCursorPosition(currentLeft, currentTop);
         }
     }
 }
