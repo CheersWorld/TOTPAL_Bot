@@ -52,7 +52,7 @@ namespace DiscordBot
         [Command("helpme")]
         public async Task Help(CommandContext ctx)
         {
-            await ctx.RespondAsync("Die gute alte Hilfestellung. Um einen Artikel hinzuzufügen, schick eine Nachricht mit !SetMyArticle gefolgt von deinem Artikel. Um deinen eingegeben Artikel zu sehen, schick eine Nachricht mit !GetMyArticle. Beide Kommandos funktionieren im Privat-Chat. Aus den eingereichten Artikeln wird mit !GetRandomArticle ein Artikel ausgewählt.");
+            await ctx.RespondAsync("Die gute alte Hilfestellung. Um einen Artikel hinzuzufügen, schick eine Nachricht mit !SetMyArticle gefolgt von deinem Artikel. Um deinen eingegeben Artikel zu sehen, schick eine Nachricht mit !GetMyArticle. Beide Kommandos funktionieren im Privat-Chat. Aus den eingereichten Artikeln wird mit !GetRandomArticle ein Artikel ausgewählt. \r\n Wenn du das Spiel verlassen möchtest, !leave eingeben. !source verlinkt dich zum Quellcode.");
         }
         [Command("leave")]
         public async Task Leave(CommandContext ctx)
@@ -65,6 +65,11 @@ namespace DiscordBot
         public string GetUserString(CommandContext ctx)
         {
             return ctx.User.ToString().Split(' ')[2];
+        }
+        [Command("source")]
+        public async Task Source(CommandContext ctx)
+        {
+            await ctx.RespondAsync("Der Source code ist unter https://github.com/CheersWorld/TOTPAL_Bot zu finden.");
         }
     }
 }
