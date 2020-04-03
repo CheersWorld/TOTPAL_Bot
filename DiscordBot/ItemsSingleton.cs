@@ -71,25 +71,26 @@ namespace DiscordBot
                     Console.Write(" ");
                 }
             }
-            foreach(string key in UsedThings.Keys)
+            int LineIndex = 1;
+            foreach (string key in UsedThings.Keys)
             {
-                int i = 1;
                 int charPos = 0;
                 foreach (char c in key)
                 {
-                    Console.SetCursorPosition(width - (45 - charPos), i);
+                    Console.SetCursorPosition(width - (45 - charPos), LineIndex);
                     Console.Write("\b");
                     Console.Write(c);
                     charPos++;
                 }
-                foreach(char j in UsedThings[key])
+                charPos = 0;
+                foreach (char j in UsedThings[key])
                 {
-                    Console.SetCursorPosition(width - (30-charPos), i);
+                    Console.SetCursorPosition(width - (30-charPos), LineIndex);
                     Console.Write("\b");
                     Console.Write(j);
                     charPos++;
                 }
-                i++;
+                LineIndex++;
             }
             Console.SetCursorPosition(currentLeft, currentTop);
         }

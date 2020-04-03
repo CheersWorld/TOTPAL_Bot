@@ -26,7 +26,7 @@ namespace DiscordBot
             DISCORD_CLIENT = new DiscordClient(new DiscordConfiguration
                 {
 
-                    Token = "Njk1NDA3NjE3MTA2NzcxOTg5.XoZvow.Ub5K_I07NjuQYumyxCZuPdLfsZ8",
+                    Token = "",
                     TokenType = TokenType.Bot
 
                 });
