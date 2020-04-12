@@ -13,6 +13,7 @@ namespace DiscordBot
     {
         ConsoleLogger LOGGER = new ConsoleLogger();
         ItemsSingleton UsedItemsSingleton = ItemsSingleton.Instance;
+        bool UI = false;
 
         [Command("SetMyArticle")]
         public async Task AddArticle(CommandContext ctx, params string[] Message)
@@ -58,9 +59,9 @@ namespace DiscordBot
         public async Task Leave(CommandContext ctx)
         {
             UsedItemsSingleton.RemoveUser(ctx.User.ToString());
-            await ctx.RespondAsync(ctx.User.Mention +  " hat das Spiel verlassen.");
             LOGGER.WriteMessageColor("User left: " + GetUserString(ctx), "green", true);
             UsedItemsSingleton.MakeUI();
+            await ctx.RespondAsync(ctx.User.Mention +  " hat das Spiel verlassen.");
         }
         public string GetUserString(CommandContext ctx)
         {
@@ -70,6 +71,25 @@ namespace DiscordBot
         public async Task Source(CommandContext ctx)
         {
             await ctx.RespondAsync("Der Source code ist unter https://github.com/CheersWorld/TOTPAL_Bot zu finden.");
+        }
+        [Command("god")]
+        public async Task God(CommandContext ctx)
+        {
+            await ctx.RespondAsync("There is no god, only death and despair.");
+        }
+        [Command("logo")]
+        public async Task Logo(CommandContext ctx)
+        {
+            await ctx.RespondAsync("```▄▄▄█████▓ ▒█████  ▄▄▄█████▓ ██▓███   ▄▄▄       ██▓    \r\n▓  ██▒ ▓▒▒██▒  ██▒▓  ██▒ ▓▒▓██░  ██▒▒████▄    ▓██▒    \r\n▒ ▓██░ ▒░▒██░  ██▒▒ ▓██░ ▒░▓██░ ██▓▒▒██  ▀█▄  ▒██░    \r\n░ ▓██▓ ░ ▒██   ██░░ ▓██▓ ░ ▒██▄█▓▒ ▒░██▄▄▄▄██ ▒██░    \r\n  ▒██▒ ░ ░ ████▓▒░  ▒██▒ ░ ▒██▒ ░  ░ ▓█   ▓██▒░██████▒\r\n  ▒ ░░   ░ ▒░▒░▒░   ▒ ░░   ▒▓▒░ ░  ░ ▒▒   ▓▒█░░ ▒░▓  ░\r\n    ░      ░ ▒ ▒░     ░    ░▒ ░       ▒   ▒▒ ░░ ░ ▒  ░\r\n  ░      ░ ░ ░ ▒    ░      ░░         ░   ▒     ░ ░   \r\n             ░ ░                          ░  ░    ░  ░```");
+        }
+        [Command("ShowUI")]
+        public async Task ShowUI(CommandContext ctx)
+        {
+            UI = !UI;
+            UsedItemsSingleton.ToggleUI();
+            UsedItemsSingleton.MakeUI();
+            LOGGER.WriteMessageColor("UI Toggled by " + GetUserString(ctx), "yellow", true);
+            await ctx.RespondAsync("Show UI ist jezt: ``" + UI.ToString() + "``");
         }
     }
 }

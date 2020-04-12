@@ -17,6 +17,7 @@ namespace DiscordBot
         private static ConsoleLogger LOGGER = new ConsoleLogger();
         public static ItemsSingleton Instance { get { return lazy.Value; } }
         Dictionary<string, string> UsedThings = new Dictionary<string, string>();
+        bool showUI = false;
         private ItemsSingleton()
         {
 
@@ -52,6 +53,10 @@ namespace DiscordBot
         {
             UsedThings.Remove(_key.Split(SPLIT_CHAR)[SPLIT_INT]);
         }
+        public void ToggleUI()
+        {
+            showUI = !showUI;
+        }
         //You could make another class for this method, would be neater. However, would need instancing of the singleton. Since this is just one method I'll do it here
         public void MakeUI()
         {
@@ -62,15 +67,15 @@ namespace DiscordBot
             Console.ForegroundColor = ConsoleColor.Yellow;
             for (int i = 0; i < (UsedThings.Count() + 2); i++)
             {
-                Console.SetCursorPosition(width - 50, i);
+                Console.SetCursorPosition(width - 65, i);
                 Console.Write("\b");
-                Console.Write("|");
-                for(int j = 0; j < 49; j++)
-                {
-                    Console.SetCursorPosition(width - 49 + j, i);
-                    Console.Write("\b");
-                    Console.Write(" ");
-                }
+                if (showUI) { Console.Write("|"); } else { Console.Write(" "); }
+                    for (int j = 0; j < 49; j++)
+                    {
+                        Console.SetCursorPosition(width - 64 + j, i);
+                        Console.Write("\b");
+                        Console.Write(" ");
+                    }
             }
             int LineIndex = 1;
             foreach (string key in UsedThings.Keys)
@@ -78,9 +83,13 @@ namespace DiscordBot
                 int charPos = 0;
                 foreach (char c in key)
                 {
-                    Console.SetCursorPosition(width - (45 - charPos), LineIndex);
+                    Console.SetCursorPosition(width - (60 - charPos), LineIndex);
                     Console.Write("\b");
-                    Console.Write(c);
+                    if (showUI)
+                    {
+                        Console.Write(c);
+                    }
+                    else { Console.Write(" "); }
                     charPos++;
                 }
                 charPos = 0;
@@ -88,7 +97,11 @@ namespace DiscordBot
                 {
                     Console.SetCursorPosition(width - (30-charPos), LineIndex);
                     Console.Write("\b");
-                    Console.Write(j);
+                    if (showUI)
+                    {
+                        Console.Write(j);
+                    }
+                    else { Console.Write(" "); }
                     charPos++;
                 }
                 LineIndex++;

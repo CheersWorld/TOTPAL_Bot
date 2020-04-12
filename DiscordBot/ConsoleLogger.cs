@@ -13,7 +13,7 @@ namespace DiscordBot
         public void WriteMessageColor(string message, string color, bool UseDate)
         {
 
-            if (UseDate) { message = DateTime.Now.ToString() + ": " + message; }
+            if (UseDate) { message = "[" + DateTime.Now.ToString() + "] " + message; }
             lock (_MessageLock)
             {
                 switch (color)
@@ -40,7 +40,7 @@ namespace DiscordBot
         {
             lock (_MessageLock)
             {
-                if (UseDate) { message = DateTime.Now.ToString() + ": " + message; }
+                if (UseDate) { message = "[" + DateTime.Now.ToString() + "] " + message; }
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(message);
                 Console.ResetColor();

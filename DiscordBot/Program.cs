@@ -15,7 +15,13 @@ namespace DiscordBot
         static ConsoleLogger LOGGER = new ConsoleLogger();
         static void Main(string[] args)
         {
-            MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
+            try
+            {
+                MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
+            } catch
+            {
+                LOGGER.WriteMessageColor("Error: No Token supplie", "red", true);
+            }
         }
         
 
@@ -26,13 +32,15 @@ namespace DiscordBot
             for(int i = 0; i < 5; i++) { Console.WriteLine(""); }
             Console.ForegroundColor = ConsoleColor.White;
             DISCORD_CLIENT = new DiscordClient(new DiscordConfiguration
-                {
+            {
 
-                    Token = "",
-                    TokenType = TokenType.Bot
+                Token = "",
+                TokenType = TokenType.Bot,
+                UseInternalLogHandler = true,
+                LogLevel = LogLevel.Warning
 
                 });
-            LOGGER.WriteMessageColor("Registered Bot", "green", true);
+            LOGGER.WriteMessageColor("Client generated", "green", true);
             /*DISCORD_CLIENT.MessageCreated += async e =>
             {
                 if (e.Message.Content.ToLower().StartsWith("ping"))
@@ -46,6 +54,7 @@ namespace DiscordBot
             COMMANDS.RegisterCommands<CommandsManager>();
             LOGGER.WriteMessageColor("Commands registered", "green", true);
             await DISCORD_CLIENT.ConnectAsync();
+            LOGGER.WriteMessageColor("Connected", "green", true);
             await Task.Delay(-1);
         }
 
