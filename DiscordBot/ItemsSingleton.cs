@@ -18,20 +18,25 @@ namespace DiscordBot
         public static ItemsSingleton Instance { get { return lazy.Value; } }
         Dictionary<string, string> UsedThings = new Dictionary<string, string>();
         bool showUI = false;
+        //Singleton Patter. This way you can register your article in private, and it can still be read out later. The list does not seem persistent if you don't do this. 
         private ItemsSingleton()
         {
 
         }
+        //Registers an Article
         public void SetArticle(string _key, string _value)
         {
             try
             {
+                //Adding to Dictionary. Key is the User identifier (ABC#1234). Nicknames don't affect this
                 UsedThings.Add(_key.Split(SPLIT_CHAR)[2], _value);
             } catch
             {
+                //Overwrite if already present. 
                 UsedThings[_key.Split(SPLIT_CHAR)[SPLIT_INT]] = _value;
             }
         }
+        //Shows your article. try: Your article is <xyz>. In case of error: Returns "No Article found"
         public string GetArticle(string _key)
         {
             try{ return "Dein Artikel ist " + UsedThings[_key.Split(SPLIT_CHAR)[SPLIT_INT]]; }
@@ -41,18 +46,22 @@ namespace DiscordBot
                 return "Kein Artikel gefunden";
             }            
         }
+
         public int GetCount()
         {
             return UsedThings.Count();
         }
+
         public Dictionary<string, string> GetDictionary()
         {
             return UsedThings;
         }
+
         public void RemoveUser(string _key)
         {
             UsedThings.Remove(_key.Split(SPLIT_CHAR)[SPLIT_INT]);
         }
+
         public void ToggleUI()
         {
             showUI = !showUI;
@@ -69,7 +78,7 @@ namespace DiscordBot
             {
                 Console.SetCursorPosition(width - 65, i);
                 Console.Write("\b");
-                if (showUI) { Console.Write("|"); } else { Console.Write(" "); }
+                if (showUI) { Console.Write("|"); } else { Console.Write(" "); } //Removes UI if untoggled
                     for (int j = 0; j < 49; j++)
                     {
                         Console.SetCursorPosition(width - 64 + j, i);

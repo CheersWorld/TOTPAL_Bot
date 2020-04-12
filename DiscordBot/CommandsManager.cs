@@ -19,16 +19,16 @@ namespace DiscordBot
         public async Task AddArticle(CommandContext ctx, params string[] Message)
         {
             string tempMsg = "";
-            foreach(string tempString in Message)
+            foreach(string tempString in Message) //Necessary to allow for spaces in article name
             {
                 tempMsg = tempMsg + tempString + " ";
             }
             UsedItemsSingleton.SetArticle(ctx.User.ToString(), tempMsg);
-            await ctx.RespondAsync("Dein Artikel ist: " + tempMsg);
-            UsedItemsSingleton.MakeUI();    
+            UsedItemsSingleton.MakeUI();
             LOGGER.WriteMessageColor("Article registered for " + GetUserString(ctx), "green", true);
+            await ctx.RespondAsync("Dein Artikel ist: " + tempMsg);
         }
-
+        //Returns article of user
         [Command("GetMyArticle")]
         public async Task GetArticle(CommandContext ctx)
         {
@@ -36,25 +36,30 @@ namespace DiscordBot
             await ctx.RespondAsync(UsedItemsSingleton.GetArticle(ctx.User.ToString()));
         }
 
+        /*
+         * Returns a random Article in the entered Articles. Displays a yellow warning message, just to make sure you can see that this happened.
+         * We need an array for this, so we populate it. We can get the Array at a random index, not the Dictionary tho, since it works as a key/value pair
+         */
         [Command("GetRandomArticle")]
         public async Task RespondArticle(CommandContext ctx)
         {
-            String[] _usedArray = new string[UsedItemsSingleton.GetCount()];
+            String[] _usedArray = new string[UsedItemsSingleton.GetCount()]; //Temporary Array
             int i = 0;
-            foreach (string Article in UsedItemsSingleton.GetDictionary().Values)
+            foreach (string Article in UsedItemsSingleton.GetDictionary().Values) //Populate
             {
                 _usedArray[i] = Article;
                 i++;
             }
-
             LOGGER.WriteMessageColor("Returned random Article for " + GetUserString(ctx), "yellow", true);
-            await ctx.RespondAsync("Wort ist: " + _usedArray[new Random().Next(0, UsedItemsSingleton.GetDictionary().Count())]);
+            await ctx.RespondAsync("Artikel ist: " + _usedArray[new Random().Next(0, UsedItemsSingleton.GetDictionary().Count())]); //Get Random Article
         }
+        //Everybody needs help sometimes. Just a long line of text.
         [Command("helpme")]
         public async Task Help(CommandContext ctx)
         {
-            await ctx.RespondAsync("Die gute alte Hilfestellung. Um einen Artikel hinzuzufügen, schick eine Nachricht mit !SetMyArticle gefolgt von deinem Artikel. Um deinen eingegeben Artikel zu sehen, schick eine Nachricht mit !GetMyArticle. Beide Kommandos funktionieren im Privat-Chat. Aus den eingereichten Artikeln wird mit !GetRandomArticle ein Artikel ausgewählt. \r\n Wenn du das Spiel verlassen möchtest, !leave eingeben. !source verlinkt dich zum Quellcode.");
+            await ctx.RespondAsync("Um einen Artikel hinzuzufügen, schick eine Nachricht mit !SetMyArticle gefolgt von deinem Artikel. \r\n Um deinen eingegeben Artikel zu sehen, schick eine Nachricht mit !GetMyArticle. Beide Kommandos funktionieren im Privat-Chat mit dem Bot. \r\n Aus den eingereichten Artikeln wird mit !GetRandomArticle ein Artikel ausgewählt. \r\n Wenn du das Spiel verlassen möchtest, !leave eingeben. !source verlinkt dich zum Quellcode.");
         }
+        //Allows a User to leave the game.
         [Command("leave")]
         public async Task Leave(CommandContext ctx)
         {
@@ -63,25 +68,31 @@ namespace DiscordBot
             UsedItemsSingleton.MakeUI();
             await ctx.RespondAsync(ctx.User.Mention +  " hat das Spiel verlassen.");
         }
+        //Useful to Display a username in the log. Useless otherwise.
         public string GetUserString(CommandContext ctx)
         {
             return ctx.User.ToString().Split(' ')[2];
         }
+
+        //Linking to the Source Code. 
         [Command("source")]
         public async Task Source(CommandContext ctx)
         {
             await ctx.RespondAsync("Der Source code ist unter https://github.com/CheersWorld/TOTPAL_Bot zu finden.");
         }
+        //Better than a ping command. 
         [Command("god")]
         public async Task God(CommandContext ctx)
         {
             await ctx.RespondAsync("There is no god, only death and despair.");
         }
+        //Everybody needs a splash screen
         [Command("logo")]
         public async Task Logo(CommandContext ctx)
         {
             await ctx.RespondAsync("```▄▄▄█████▓ ▒█████  ▄▄▄█████▓ ██▓███   ▄▄▄       ██▓    \r\n▓  ██▒ ▓▒▒██▒  ██▒▓  ██▒ ▓▒▓██░  ██▒▒████▄    ▓██▒    \r\n▒ ▓██░ ▒░▒██░  ██▒▒ ▓██░ ▒░▓██░ ██▓▒▒██  ▀█▄  ▒██░    \r\n░ ▓██▓ ░ ▒██   ██░░ ▓██▓ ░ ▒██▄█▓▒ ▒░██▄▄▄▄██ ▒██░    \r\n  ▒██▒ ░ ░ ████▓▒░  ▒██▒ ░ ▒██▒ ░  ░ ▓█   ▓██▒░██████▒\r\n  ▒ ░░   ░ ▒░▒░▒░   ▒ ░░   ▒▓▒░ ░  ░ ▒▒   ▓▒█░░ ▒░▓  ░\r\n    ░      ░ ▒ ▒░     ░    ░▒ ░       ▒   ▒▒ ░░ ░ ▒  ░\r\n  ░      ░ ░ ░ ▒    ░      ░░         ░   ▒     ░ ░   \r\n             ░ ░                          ░  ░    ░  ░```");
         }
+        //Allows UI-Toggle. This is great if you don't want to get spoilered. UI off by default.
         [Command("ShowUI")]
         public async Task ShowUI(CommandContext ctx)
         {

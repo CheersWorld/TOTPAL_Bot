@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DiscordBot
 {
+    //Colorful Console. This is not a core functionality. Makes it look good tho.
     class ConsoleLogger
     {
         private static object _MessageLock = new object();
