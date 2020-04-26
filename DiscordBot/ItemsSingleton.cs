@@ -104,6 +104,16 @@ namespace DiscordBot
                 charPos = 0;
                 foreach (char j in UsedThings[key])
                 {
+                    if(charPos > 27)
+                    {
+                        Console.Write("\b\b\b");
+                        if (showUI)
+                        {
+                            Console.Write("...");
+                        }
+                        else { Console.Write("   "); }
+                        break;
+                    }
                     Console.SetCursorPosition(width - (30-charPos), LineIndex);
                     Console.Write("\b");
                     if (showUI)

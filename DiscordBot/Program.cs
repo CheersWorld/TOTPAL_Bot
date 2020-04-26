@@ -20,7 +20,9 @@ namespace DiscordBot
                 MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
             } catch
             {
-                LOGGER.WriteMessageColor("Error: No Token supplied", "red", true);
+                LOGGER.WriteMessageColor("Error on Startup", "red", true);
+                Console.WriteLine();
+                LOGGER.WriteMessageColor("  You most likely didn't supply a token", "red", false);
                 Console.WriteLine();
                 LOGGER.WriteMessageColor("  Cheak ReadMe for Instructions on how to deal with this", "red", false);
                 Console.WriteLine();
